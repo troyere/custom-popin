@@ -18,10 +18,10 @@ class ConfigValidatorService
             (!isset($config['width']) || isset($config['height']))) {
             $errors[] = 'Width and height are both required if the size mode equals "custom".';
         }
-        if (isset($config['width']) && !is_integer($config['width'])) {
+        if (isset($config['width']) && !is_numeric($config['width'])) {
             $errors[] = 'Width must be an integer.';
         }
-        if (isset($config['height']) && !is_integer($config['height'])) {
+        if (isset($config['height']) && !is_numeric($config['height'])) {
             $errors[] = 'Height must be an integer.';
         }
         return $errors;

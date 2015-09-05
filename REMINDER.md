@@ -23,3 +23,17 @@ Get field value by using "ref" attribute :
 ```JavaScript
 React.findDOMNode(this.refs.myFieldName).value.trim()
 ```
+
+**Important** ! This trick cannot work for now :
+```JavaScript
+handleChangeField: function(event) {
+    var state = { formDirty: true };
+    state[event.target.name] = event.target.value;
+    this.setState(state);
+},
+```
+
+How to set the style attribute :
+```JavaScript
+style={marginRight: spacing + 'em'}
+```

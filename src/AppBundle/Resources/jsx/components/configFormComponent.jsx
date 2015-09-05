@@ -11,21 +11,30 @@ var Form = React.createClass({
             messageType: '',
             formDirty: false,
             configTitle: '',
-            configText: ''
+            configText: '',
+            configSizeMode: '',
+            configWidth: '',
+            configHeight: ''
         };
     },
 
     getConfig: function() {
         return {
             title: this.state.configTitle,
-            text: this.state.configText
+            text: this.state.configText,
+            sizeMode: this.state.configSizeMode,
+            width: this.state.configWidth,
+            height: this.state.configHeight
         };
     },
 
     setConfig: function(config) {
         this.setState({
             configTitle: config.title,
-            configText: config.text
+            configText: config.text,
+            configSizeMode: config.sizeMode,
+            configWidth: config.width,
+            configHeight: config.height
         });
     },
 
@@ -62,6 +71,21 @@ var Form = React.createClass({
         this.setState({ formDirty: true, configText: event.target.value });
     },
 
+    handleChangeSizeMode: function(event) {
+        this.setState({ formDirty: true, configSizeMode: event.target.value });
+        if (event.target.value !== 'custom') {
+            this.setState({ configWidth: null, configHeight: null });
+        }
+    },
+
+    handleChangeWidth: function(event) {
+        this.setState({ formDirty: true, configWidth: event.target.value });
+    },
+
+    handleChangeHeight: function(event) {
+        this.setState({ formDirty: true, configHeight: event.target.value });
+    },
+
     componentDidMount: function() {
         // Fill the form
         ConfigService.find().done(function(response) {
@@ -91,30 +115,87 @@ var Form = React.createClass({
         var message     = this.state.message;
         var messageType = this.state.messageType;
 
-        var title = this.state.configTitle;
-        var text  = this.state.configText;
+        var fieldStyleWidth  = { display: 'none' };
+        var fieldStyleHeight = { display: 'none' };
+        if (this.state.configSizeMode === 'custom') {
+            fieldStyleWidth.display  = '';
+            fieldStyleHeight.display = '';
+        }
 
         return (
-            <form id="form-custom-popin" className="form-horizontal">
+            <form id="form-custom-popin">
 
-                <div className="row form-alert-container">
+                <div className="form-alert-container">
                     {messageType && message ? <AlertComponent type={messageType} message={message} /> : null}
                 </div>
 
-                <div className="form-group">
+                <div className="form-group" id="field-title">
                     <label htmlFor="title" className="control-label col-sm2">
                         Title
                     </label>
                     <input type="text" placeholder="Title" name="title" id="title" className="form-control"
-                           value={title} onChange={this.handleChangeTitle} />
+                           value={this.state.configTitle}
+                           onChange={this.handleChangeTitle} />
                 </div>
 
-                <div className="form-group">
+                <div className="form-group" id="field-text">
                     <label htmlFor="text" className="control-label col-sm2">
                         Text
                     </label>
                     <textarea placeholder="Text" name="text" className="form-control"
-                              value={text} onChange={this.handleChangeText} />
+                              value={this.state.configText}
+                              onChange={this.handleChangeText} />
+                </div>
+
+                <div className="form-group" id="field-size-mode">
+                    <label className="control-label col-sm2">
+                        Size mode
+                    </label>
+                    <div className="form-group">
+                        <label className="radio-inline">
+                            <input type="radio" name="sizeMode" value="normal"
+                                   checked={this.state.configSizeMode === 'normal'}
+                                   onChange={this.handleChangeSizeMode} /> normal
+                        </label>
+                        <label className="radio-inline">
+                            <input type="radio" name="sizeMode" value="small"
+                                   checked={this.state.configSizeMode === 'small'}
+                                   onChange={this.handleChangeSizeMode} /> small
+                        </label>
+                        <label className="radio-inline">
+                            <input type="radio" name="sizeMode" value="large"
+                                   checked={this.state.configSizeMode === 'large'}
+                                   onChange={this.handleChangeSizeMode} /> large
+                        </label>
+                        <label className="radio-inline">
+                            <input type="radio" name="sizeMode" value="full-page"
+                                   checked={this.state.configSizeMode === 'full-page'}
+                                   onChange={this.handleChangeSizeMode} /> full-page
+                        </label>
+                        <label className="radio-inline">
+                            <input type="radio" name="sizeMode" value="custom"
+                                   checked={this.state.configSizeMode === 'custom'}
+                                   onChange={this.handleChangeSizeMode} /> custom
+                        </label>
+                    </div>
+                </div>
+
+                <div className="form-group" id="field-width" style={fieldStyleWidth}>
+                    <label htmlFor="width" className="control-label col-sm2">
+                        Width
+                    </label>
+                    <input type="number" placeholder="Width" name="width" id="width" className="form-control"
+                           value={this.state.configWidth}
+                           onChange={this.handleChangeWidth} />
+                </div>
+
+                <div className="form-group" id="field-height" style={fieldStyleHeight}>
+                    <label htmlFor="height" className="control-label col-sm2">
+                        Height
+                    </label>
+                    <input type="number" placeholder="Height" name="height" id="height" className="form-control"
+                           value={this.state.configHeight}
+                           onChange={this.handleChangeHeight} />
                 </div>
 
                 <div className="form-group">
