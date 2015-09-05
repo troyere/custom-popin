@@ -37,13 +37,23 @@ class ModalScriptService
     }
 
     /**
+     * Return the modal script dir
+     *
+     * @return string
+     */
+    public function getDir()
+    {
+        return $this->dir;
+    }
+
+    /**
      * Return the modal script path
      *
      * @return string
      */
     public function getPath()
     {
-        return $this->dir.DIRECTORY_SEPARATOR.'script.html';
+        return $this->dir.DIRECTORY_SEPARATOR.'generated-page.html';
     }
 
     /**
@@ -53,6 +63,7 @@ class ModalScriptService
      */
     public function createFile()
     {
+        $dir    = $this->getDir();
         $dest   = $this->getPath();
         $config = $this->config->get();
 
@@ -60,6 +71,9 @@ class ModalScriptService
             'config' => $config
         ));
 
+        if (!is_dir($dir)) {
+            mkdir($dir);
+        }
         if (!file_put_contents($dest, $content)) {
             throw new \Exception('Something went wrong in the modal script creation.');
         }

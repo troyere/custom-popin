@@ -12,4 +12,4 @@
 /bower_components
 /node_modules
 /web/build
-/web/modal-script/script.html
+/web/modal-script/*
