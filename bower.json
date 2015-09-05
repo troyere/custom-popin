@@ -1,0 +1,22 @@
+{
+  "name": "custom-popin",
+  "version": "0.0.1",
+  "description": "Popin customisation with React",
+  "homepage": "https://github.com/troyere/custom-popin",
+  "authors": [
+    "Tanguy ROYERE <tanguy.royere@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "jquery": "~2.1.4",
+    "underscore": "~1.8.3"
+  }
+}
