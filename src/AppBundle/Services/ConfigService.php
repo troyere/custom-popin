@@ -11,11 +11,17 @@ class ConfigService
     /**
      * @var ClientInterface
      */
-    protected $client;
+    protected $redisClient;
 
-    public function __construct(ClientInterface $client)
+    /**
+     * @var ImageService
+     */
+    protected $imageService;
+
+    public function __construct(ClientInterface $redisClient, ImageService $imageService)
     {
-        $this->client = $client;
+        $this->redisClient  = $redisClient;
+        $this->imageService = $imageService;
     }
 
     /**
@@ -26,7 +32,10 @@ class ConfigService
     public function save(array $config)
     {
         foreach ($config as $key => $value) {
-            $this->client->set($key, $value);
+            if ($key === 'image') {
+                $this->redisClient->set('reducedImage', $this->imageService->resizeHeight($value, 25));
+            }
+            $this->redisClient->set($key, $value);
         }
     }
 
@@ -40,7 +49,7 @@ class ConfigService
         $result = array();
         $keys   = $this->getKeys();
         foreach ($keys as $key) {
-            $result[$key] = $this->client->get($key);
+            $result[$key] = $this->redisClient->get($key);
         }
         return $result;
     }
@@ -57,7 +66,7 @@ class ConfigService
         if (!count($keys)) {
             throw new Exception('Nothing to delete.');
         }
-        return $this->client->del($keys);
+        return $this->redisClient->del($keys);
     }
 
     /**
@@ -67,7 +76,7 @@ class ConfigService
      */
     private function getKeys()
     {
-        return $this->client->keys('*');
+        return $this->redisClient->keys('*');
     }
 
 }

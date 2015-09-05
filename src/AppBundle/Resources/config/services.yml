@@ -6,10 +6,14 @@ parameters:
 services:
     config_service:
         class: AppBundle\Services\ConfigService
-        arguments: [ "@snc_redis.default" ]
+        arguments: [ "@snc_redis.default", "@image_service" ]
 
     config_validator_service:
         class: AppBundle\Services\ConfigValidatorService
+        arguments: [ "@image_service" ]
+
+    image_service:
+        class: AppBundle\Services\ImageService
 
     modal_script_service:
         class: AppBundle\Services\ModalScriptService

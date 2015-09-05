@@ -11,30 +11,36 @@ var Form = React.createClass({
             messageType: '',
             formDirty: false,
             configTitle: '',
+            configImage: '',
             configText: '',
-            configSizeMode: '',
-            configWidth: '',
-            configHeight: ''
+            configSizeMode: 'normal',
+            configWidth: 0,
+            configHeight: 0,
+            configTheme: 'default'
         };
     },
 
     getConfig: function() {
         return {
             title: this.state.configTitle,
+            image: this.state.configImage,
             text: this.state.configText,
             sizeMode: this.state.configSizeMode,
             width: this.state.configWidth,
-            height: this.state.configHeight
+            height: this.state.configHeight,
+            theme: this.state.configTheme
         };
     },
 
     setConfig: function(config) {
         this.setState({
             configTitle: config.title,
+            configImage: config.image,
             configText: config.text,
             configSizeMode: config.sizeMode,
             configWidth: config.width,
-            configHeight: config.height
+            configHeight: config.height,
+            configTheme: config.theme
         });
     },
 
@@ -67,6 +73,16 @@ var Form = React.createClass({
         this.setState({ formDirty: true, configTitle: event.target.value });
     },
 
+    handleChangeImage: function(event) {
+        var fileReader = new FileReader();
+        var file       = event.target.files[0];
+
+        fileReader.onload = function(upload) {
+            this.setState({ formDirty: true, configImage: upload.target.result });
+        }.bind(this);
+        fileReader.readAsDataURL(file);
+    },
+
     handleChangeText: function(event) {
         this.setState({ formDirty: true, configText: event.target.value });
     },
@@ -84,6 +100,10 @@ var Form = React.createClass({
 
     handleChangeHeight: function(event) {
         this.setState({ formDirty: true, configHeight: event.target.value });
+    },
+
+    handleChangeTheme: function(event) {
+        this.setState({ formDirty: true, configTheme: event.target.value });
     },
 
     componentDidMount: function() {
@@ -123,7 +143,7 @@ var Form = React.createClass({
         }
 
         return (
-            <form id="form-custom-popin">
+            <form id="form-custom-popin" encType="multipart/form-data">
 
                 <div className="form-alert-container">
                     {messageType && message ? <AlertComponent type={messageType} message={message} /> : null}
@@ -145,6 +165,14 @@ var Form = React.createClass({
                     <textarea placeholder="Text" name="text" className="form-control"
                               value={this.state.configText}
                               onChange={this.handleChangeText} />
+                </div>
+
+                <div className="form-group" id="field-title-icon">
+                    <label htmlFor="title-icon" className="control-label col-sm2">
+                        Image
+                    </label>
+                    <input type="file" name="title-icon" id="title-icon"
+                           onChange={this.handleChangeImage} />
                 </div>
 
                 <div className="form-group" id="field-size-mode">
@@ -196,6 +224,22 @@ var Form = React.createClass({
                     <input type="number" placeholder="Height" name="height" id="height" className="form-control"
                            value={this.state.configHeight}
                            onChange={this.handleChangeHeight} />
+                </div>
+
+                <div className="form-group" id="field-theme">
+                    <label htmlFor="theme" className="control-label col-sm2">
+                        Theme
+                    </label>
+                    <select name="theme" id="theme" className="form-control"
+                            value={this.state.configTheme}
+                            onChange={this.handleChangeTheme}>
+                        <option value="default">Default</option>
+                        <option value="primary">Primary</option>
+                        <option value="success">Success</option>
+                        <option value="info">Info</option>
+                        <option value="warning">Warning</option>
+                        <option value="danger">Danger</option>
+                    </select>
                 </div>
 
                 <div className="form-group">
