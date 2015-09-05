@@ -1,0 +1,9 @@
+
+services:
+    config_service:
+        class: AppBundle\Services\ConfigService
+        arguments: [ "@snc_redis.default" ]
+
+    modal_script_service:
+        class: AppBundle\Services\ModalScriptService
+        arguments: [ "@config_service" ]
