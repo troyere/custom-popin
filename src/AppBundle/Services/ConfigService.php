@@ -2,6 +2,7 @@
 
 namespace AppBundle\Services;
 
+use Exception;
 use Predis\ClientInterface;
 
 class ConfigService
@@ -42,6 +43,21 @@ class ConfigService
             $result[$key] = $this->client->get($key);
         }
         return $result;
+    }
+
+    /**
+     * Delete all the config values
+     *
+     * @return int
+     * @throws Exception
+     */
+    public function clear()
+    {
+        $keys = $this->getKeys();
+        if (!count($keys)) {
+            throw new Exception('Nothing to delete.');
+        }
+        return $this->client->del($keys);
     }
 
     /**

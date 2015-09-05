@@ -1,4 +1,8 @@
 
+parameters:
+    modal_script_dir: "%kernel.root_dir%/../web/modal-script"
+    modal_script_template: "AppBundle:ModalScript:page.html.twig"
+
 services:
     config_service:
         class: AppBundle\Services\ConfigService
@@ -6,4 +10,4 @@ services:
 
     modal_script_service:
         class: AppBundle\Services\ModalScriptService
-        arguments: [ "@config_service" ]
+        arguments: [ "@config_service", "@templating", "%modal_script_dir%", "%modal_script_template%" ]

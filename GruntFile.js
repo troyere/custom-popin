@@ -21,6 +21,7 @@ module.exports = function (grunt) {
         },
 
         // Basic copy into web/build
+        // TODO :: maybe not required because we need to uglify them anyway
         copy: {
             bootstrap: {
                 files: [{
@@ -36,6 +37,14 @@ module.exports = function (grunt) {
                     cwd: 'bower_components/jquery/dist',
                     src: '**/*',
                     dest: 'web/build/vendor/jquery/'
+                }]
+            },
+            jqueryidletimer: {
+                files: [{
+                    expand: true,
+                    cwd: 'bower_components/jquery-idletimer/dist',
+                    src: '**/*',
+                    dest: 'web/build/vendor/jquery-idletimer/'
                 }]
             },
             underscore: {
@@ -67,6 +76,7 @@ module.exports = function (grunt) {
                 files: {
                     'web/build/js/main.min.js': [
                         'web/build/vendor/jquery/jquery.js',
+                        'web/build/vendor/jquery-idletimer/idle-timer.js',
                         'web/build/vendor/bootstrap/js/bootstrap.js',
                         'web/build/vendor/underscore/underscore.js',
                         'web/build/js/app.js'

@@ -15,8 +15,7 @@ class ConfigController extends Controller
     /**
      * Save config
      *
-     * @Route("/configs", name="save_config")
-     * @Method({"POST"})
+     * @Route("/configs", name="save_config", methods = { "POST" })
      *
      * @param Request $request
      * @return JsonResponse
@@ -31,6 +30,7 @@ class ConfigController extends Controller
                 throw new Exception('No config to save.');
             }
             $this->get('config_service')->save($config);
+            $this->get('modal_script_service')->createFile();
         } catch (Exception $e) {
             $response->setData(array('error' => $e->getMessage()));
         }
@@ -40,8 +40,7 @@ class ConfigController extends Controller
     /**
      * Get config
      *
-     * @Route("/configs", name="get_config")
-     * @Method({"GET"})
+     * @Route("/configs", name="get_config", methods = { "GET" })
      *
      * @param Request $request
      * @return JsonResponse
@@ -52,6 +51,27 @@ class ConfigController extends Controller
         try {
             $config = $this->get('config_service')->get();
             $response->setData(array('config' => $config));
+        } catch (Exception $e) {
+            $response->setData(array('error' => $e->getMessage()));
+        }
+        return $response;
+    }
+
+    /**
+     * Clear config
+     *
+     * @Route("/configs", name="clear_config", methods = { "DELETE" })
+     * @Route("/configs/delete", methods = { "GET" })
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function clearConfigAction(Request $request)
+    {
+        $response = new JsonResponse;
+        try {
+            $this->get('config_service')->clear();
         } catch (Exception $e) {
             $response->setData(array('error' => $e->getMessage()));
         }

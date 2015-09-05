@@ -1,7 +1,7 @@
 var React = require('react'),
-    Form = require('./form.jsx');
+    ConfigFormComponent = require('./components/configFormComponent.jsx');
 
 React.render(
-    <Form url="http://localhost:8000/configs" />,
-    document.getElementById('form')
+    <ConfigFormComponent />,
+    document.getElementById('form-container')
 );
