@@ -18,8 +18,8 @@ var Alert = React.createClass({
             return this.props.message
         } else {
             var rows = [];
-            _.each(this.props.message, function(message) {
-                rows.push(<li>{message}</li>);
+            _.each(this.props.message, function(message, i) {
+                rows.push(<li key={i}>{message}</li>);
             });
             return <ul>{rows}</ul>;
         }
