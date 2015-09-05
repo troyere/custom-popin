@@ -29,7 +29,7 @@ class ModalScriptController extends Controller
         try {
             $this->get('modal_script_service')->createFile();
         } catch (Exception $e) {
-            $response->setData(array('error' => $e->getMessage()));
+            $response->setData(array('errors' => array($e->getMessage())));
         }
         return $response;
     }

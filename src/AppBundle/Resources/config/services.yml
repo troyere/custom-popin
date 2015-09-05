@@ -8,6 +8,9 @@ services:
         class: AppBundle\Services\ConfigService
         arguments: [ "@snc_redis.default" ]
 
+    config_validator_service:
+        class: AppBundle\Services\ConfigValidatorService
+
     modal_script_service:
         class: AppBundle\Services\ModalScriptService
         arguments: [ "@config_service", "@templating", "%modal_script_dir%", "%modal_script_template%" ]

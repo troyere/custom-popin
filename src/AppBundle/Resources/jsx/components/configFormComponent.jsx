@@ -42,10 +42,10 @@ var Form = React.createClass({
         ConfigService.save(this.getConfig()).done(function(response) {
             this.setState({ formDirty: false });
             button.button('reset');
-            if (response.error) {
-                this.setMessage('danger', 'Something went wrong: ' + response.error + '.');
+            if (response.errors) {
+                this.setMessage('danger', response.errors);
             } else {
-                this.setMessage('success', 'Modal script successfully created.');
+                this.setMessage('success', 'The modal script has been successfully saved.');
             }
         }.bind(this));
     },
@@ -77,10 +77,10 @@ var Form = React.createClass({
             if (this.state.formDirty) {
                 ConfigService.save(this.getConfig()).done(function(response) {
                     this.setState({ formDirty: false });
-                    if (response.error) {
-                        this.setMessage('danger', 'Something went wrong: ' + response.error + '.');
+                    if (response.errors) {
+                        this.setMessage('danger', response.errors);
                     } else {
-                        this.setMessage('info', 'Modal script created.');
+                        this.setMessage('info', 'The modal script has been automatically saved.');
                     }
                 }.bind(this));
             }
