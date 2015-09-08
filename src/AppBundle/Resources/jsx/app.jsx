@@ -1,7 +1,9 @@
-var React = require('react'),
-    ConfigFormComponent = require('./components/configFormComponent.jsx');
+(function() {
+    'use strict';
 
-React.render(
-    <ConfigFormComponent />,
-    document.getElementById('form-container')
-);
+    var React = require('react'),
+        ConfigFormComponent = require('./components/configFormComponent.jsx');
+
+    React.render(<ConfigFormComponent />, document.getElementById('form-container'));
+
+}());
