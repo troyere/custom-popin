@@ -15,8 +15,11 @@ var Alert = React.createClass({
 
     getContent: function() {
         if (typeof this.props.message === 'string') {
-            return this.props.message
+            return this.props.message;
         } else {
+            if (_.size(this.props.message) === 1) {
+                return _.first(this.props.message);
+            }
             var rows = [];
             _.each(this.props.message, function(message, i) {
                 rows.push(<li key={i}>{message}</li>);
