@@ -61,6 +61,7 @@ var Form = React.createClass({
                 this.setMessage('danger', response.errors);
             } else {
                 this.setMessage('success', 'The modal script has been successfully saved.');
+                $('#button-show').show();
             }
         }.bind(this));
     },
@@ -125,21 +126,31 @@ var Form = React.createClass({
                         this.setMessage('danger', response.errors);
                     } else {
                         this.setMessage('info', 'The modal script has been automatically saved.');
+                        $('#button-show').show();
                     }
                 }.bind(this));
             }
         }.bind(this));
+
+        // Check if a script already exists
+        ModalScriptService.exists().done(function(response) {
+            if (response.file_exists) {
+                $('#button-show').show();
+            }
+        });
     },
 
     render: function() {
         var message     = this.state.message;
         var messageType = this.state.messageType;
 
-        var fieldStyleWidth  = { display: 'none' };
-        var fieldStyleHeight = { display: 'none' };
+        var styleFieldWidth  = { display: 'none' };
+        var styleFieldHeight = { display: 'none' };
+        var styleButtonShow  = { display: 'none' };
+
         if (this.state.configSizeMode === 'custom') {
-            fieldStyleWidth.display  = '';
-            fieldStyleHeight.display = '';
+            styleFieldWidth.display  = '';
+            styleFieldHeight.display = '';
         }
 
         return (
@@ -208,7 +219,7 @@ var Form = React.createClass({
                     </div>
                 </div>
 
-                <div className="form-group" id="field-width" style={fieldStyleWidth}>
+                <div className="form-group" id="field-width" style={styleFieldWidth}>
                     <label htmlFor="width" className="control-label col-sm2">
                         Width
                     </label>
@@ -217,7 +228,7 @@ var Form = React.createClass({
                            onChange={this.handleChangeWidth} />
                 </div>
 
-                <div className="form-group" id="field-height" style={fieldStyleHeight}>
+                <div className="form-group" id="field-height" style={styleFieldHeight}>
                     <label htmlFor="height" className="control-label col-sm2">
                         Height
                     </label>
@@ -243,12 +254,13 @@ var Form = React.createClass({
                 </div>
 
                 <div className="form-group">
-                    <button type="button" className="btn btn-default"
+                    <button type="button" id="button-save" className="btn btn-default"
                             data-loading-text="Saving..."
                             onClick={this.handleCreateScript}>
                         Save
                     </button>
-                    <button type="button" className="btn btn-default pull-right"
+                    <button type="button" id="button-show" className="btn btn-default pull-right"
+                            style={styleButtonShow}
                             onClick={this.handleShowScript}>
                         Show
                     </button>

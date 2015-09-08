@@ -16,8 +16,7 @@ class ModalScriptController extends Controller
     /**
      * Create script file
      *
-     * @Route("/modal-script/create", name="modal_script_create")
-     * @Method({"GET"})
+     * @Route("/modal-script/create", name="modal_script_create", methods = { "GET" })
      *
      * @param Request $request
      * @return JsonResponse
@@ -35,19 +34,41 @@ class ModalScriptController extends Controller
     }
 
     /**
+     * Test if the file exists
+     *
+     * @Route("/modal-script/exists", name="modal_script_exists", methods = { "GET" })
+     *
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function fileExistsAction()
+    {
+        $response = new JsonResponse;
+        try {
+            $path = $this->get('modal_script_service')->getPath();
+            $response->setData(array('file_exists' => is_file($path)));
+        } catch (Exception $e) {
+            $response->setData(array('errors' => array($e->getMessage())));
+        }
+        return $response;
+    }
+
+    /**
      * Download script file
      *
-     * @Route("/modal-script/download", name="modal_script_download")
-     * @Method({"GET"})
+     * @Route("/modal-script/download", name="modal_script_download", methods = { "GET" })
      *
      * @param Request $request
      * @return BinaryFileResponse
      * @throws Exception
      */
-    public function openFileAction(Request $request)
+    public function downloadFileAction(Request $request)
     {
-        $response = new BinaryFileResponse($this->get('modal_script_service')->getPath());
-        return $response;
+        $path = $this->get('modal_script_service')->getPath();
+        if (!is_file($path)) {
+            throw new \Exception(sprintf('The file "%s" does not exists', $path));
+        }
+        return new BinaryFileResponse($path);
     }
 
 }

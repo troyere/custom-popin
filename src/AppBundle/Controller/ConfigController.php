@@ -37,7 +37,6 @@ class ConfigController extends Controller
             $this->get('config_service')->save($config);
             $this->get('modal_script_service')->createFile();
         } catch (Exception $e) {
-            throw $e;
             $response->setData(array('errors' => array($e->getMessage())));
         }
         return $response;

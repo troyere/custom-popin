@@ -27,7 +27,7 @@
                     </h4>
                 </div>
                 <div class="modal-body">
-                    {% if config.theme != 'default' and config.theme != 'primary' %}
+                    {% if config.theme is defined and config.theme != 'default' and config.theme != 'primary' %}
                         <div class="alert alert-{{ config.theme }}" role="alert">
                             {{ config.text | default('') }}
                         </div>
