@@ -13,3 +13,4 @@
 /node_modules
 /web/build
 /web/modal-script/*
+dump.rdb
