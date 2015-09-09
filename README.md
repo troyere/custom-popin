@@ -11,8 +11,13 @@ Requirements for the installation
 ---------------------------------
 
 - NodeJs
-- Grunt cli (npm install -g grunt-cli)
+    * apt-get install nodejs npm
+- Bower
+    * npm install -g bower
+- Grunt cli
+    * npm install -g grunt-cli
 - Redis server
+    * http://redis.io/topics/quickstart
 
 Installation
 ------------
@@ -26,3 +31,9 @@ Use
 
 - Execute the following command : grunt server
 - Run the application by using the following web address : http://127.0.0.1:8000
+
+
+Manually delete the current configuration
+-----------------------------------------
+
+- Execute the following web address : http://127.0.0.1:8000/configs/delete
