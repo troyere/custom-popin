@@ -109,7 +109,7 @@
             // Shortcuts for some frequently used commands
             shell: {
                 installSymfonyVendor: {
-                    command: 'php composer.phar selfupdate && php composer.phar install --prefer-dist --optimize-autoloader'
+                    command: 'php composer.phar install --prefer-dist --optimize-autoloader'
                 },
                 installNodeModules: {
                     command: 'npm install'
