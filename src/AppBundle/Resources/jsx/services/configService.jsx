@@ -3,7 +3,7 @@
 
     module.exports = {
 
-        url: 'http://127.0.0.1:8000/configs',
+        url: 'http://127.0.0.1:8000/config',
 
         save: function (newConfig) {
             return $.ajax({

@@ -36,4 +36,4 @@ Use
 Manually delete the current configuration
 -----------------------------------------
 
-- Execute the following web address : http://127.0.0.1:8000/configs/delete
+- Execute the following web address : http://127.0.0.1:8000/config/delete

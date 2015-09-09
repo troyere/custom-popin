@@ -5,7 +5,7 @@ namespace AppBundle\Services;
 use AppBundle\Services\ConfigService;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
-class ModalScriptService
+class ScriptService
 {
 
     /**

@@ -1,10 +1,10 @@
 (function() {
     'use strict';
 
-    var React              = require('react'),
-        ConfigService      = require('../services/configService.jsx'),
-        ModalScriptService = require('../services/modalScriptService.jsx'),
-        AlertComponent     = require('./alertComponent.jsx');
+    var React          = require('react'),
+        ConfigService  = require('../services/configService.jsx'),
+        ScriptService  = require('../services/scriptService.jsx'),
+        AlertComponent = require('./alertComponent.jsx');
 
     module.exports = React.createClass({
 
@@ -54,7 +54,7 @@
             });
         },
 
-        handleCreateScript: function (e) {
+        handleSave: function (e) {
             e.preventDefault();
             var button = $(e.target).button('loading');
             ConfigService.save(this.getConfig()).done(function (response) {
@@ -64,13 +64,9 @@
                     this.setMessage('danger', response.errors);
                 } else {
                     this.setMessage('success', 'The modal script has been successfully saved.');
-                    $('#button-show').show();
+                    ScriptService.show();
                 }
             }.bind(this));
-        },
-
-        handleShowScript: function () {
-            window.open(ModalScriptService.showUrl, '_blank');
         },
 
         handleChangeTitle: function (event) {
@@ -129,18 +125,10 @@
                             this.setMessage('danger', response.errors);
                         } else {
                             this.setMessage('info', 'The modal script has been automatically saved.');
-                            $('#button-show').show();
                         }
                     }.bind(this));
                 }
             }.bind(this));
-
-            // Check if a script already exists
-            ModalScriptService.exists().done(function (response) {
-                if (response.file_exists) {
-                    $('#button-show').show();
-                }
-            });
         },
 
         render: function () {
@@ -149,7 +137,6 @@
 
             var styleFieldWidth  = { display: 'none' };
             var styleFieldHeight = { display: 'none' };
-            var styleButtonShow  = { display: 'none' };
 
             if (this.state.configSizeMode === 'custom') {
                 styleFieldWidth.display  = '';
@@ -260,13 +247,8 @@
                     <div className="form-group">
                         <button type="button" id="button-save" className="btn btn-default"
                                 data-loading-text="Saving..."
-                                onClick={this.handleCreateScript}>
+                                onClick={this.handleSave}>
                             Save
-                        </button>
-                        <button type="button" id="button-show" className="btn btn-default pull-right"
-                                style={styleButtonShow}
-                                onClick={this.handleShowScript}>
-                            Show
                         </button>
                     </div>
 

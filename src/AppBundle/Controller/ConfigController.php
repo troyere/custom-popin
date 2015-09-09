@@ -15,13 +15,13 @@ class ConfigController extends Controller
     /**
      * Save config
      *
-     * @Route("/configs", name="save_config", methods = { "POST" })
+     * @Route("/config", name="save_config", methods = { "POST" })
      *
      * @param Request $request
      * @return JsonResponse
      * @throws Exception
      */
-    public function saveConfigAction(Request $request)
+    public function saveAction(Request $request)
     {
         $response = new JsonResponse;
         try {
@@ -35,7 +35,7 @@ class ConfigController extends Controller
                 return $response;
             }
             $this->get('config_service')->save($config);
-            $this->get('modal_script_service')->createFile();
+            $this->get('script_service')->createFile();
         } catch (Exception $e) {
             $response->setData(array('errors' => array($e->getMessage())));
         }
@@ -45,12 +45,12 @@ class ConfigController extends Controller
     /**
      * Get config
      *
-     * @Route("/configs", name="get_config", methods = { "GET" })
+     * @Route("/config", name="get_config", methods = { "GET" })
      *
      * @param Request $request
      * @return JsonResponse
      */
-    public function getConfigAction(Request $request)
+    public function getAction(Request $request)
     {
         $response = new JsonResponse;
         try {
@@ -65,14 +65,14 @@ class ConfigController extends Controller
     /**
      * Clear config
      *
-     * @Route("/configs", name="clear_config", methods = { "DELETE" })
-     * @Route("/configs/delete", methods = { "GET" })
+     * @Route("/config", name="delete_config", methods = { "DELETE" })
+     * @Route("/config/delete", methods = { "GET" })
      *
      * @param Request $request
      * @return JsonResponse
      * @throws Exception
      */
-    public function clearConfigAction(Request $request)
+    public function deleteAction(Request $request)
     {
         $response = new JsonResponse;
         try {
