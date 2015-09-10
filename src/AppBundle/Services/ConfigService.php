@@ -14,11 +14,11 @@ class ConfigService
     protected $redisClient;
 
     /**
-     * @var ImageService
+     * @var ScriptImageService
      */
     protected $imageService;
 
-    public function __construct(ClientInterface $redisClient, ImageService $imageService)
+    public function __construct(ClientInterface $redisClient, ScriptImageService $imageService)
     {
         $this->redisClient  = $redisClient;
         $this->imageService = $imageService;
@@ -31,10 +31,8 @@ class ConfigService
      */
     public function save(array $config)
     {
+        $config = $this->prepareSave($config);
         foreach ($config as $key => $value) {
-            if ($key === 'image') {
-                $this->redisClient->set('reducedImage', $this->imageService->resizeHeight($value, 25));
-            }
             $this->redisClient->set($key, $value);
         }
     }
@@ -67,6 +65,21 @@ class ConfigService
             throw new Exception('Nothing to delete.');
         }
         return $this->redisClient->del($keys);
+    }
+
+    /**
+     * Prepare the config before saving
+     *
+     * @param array $config
+     * @return array
+     * @throws Exception
+     */
+    private function prepareSave(array $config)
+    {
+        if (isset($config['image'])) {
+            $config['image'] = $this->imageService->resize($config['image'], 150, 150);
+        }
+        return $config;
     }
 
     /**

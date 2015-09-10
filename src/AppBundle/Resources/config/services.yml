@@ -1,20 +1,26 @@
 
 parameters:
-    script_dir: "%kernel.root_dir%/../web/modal-script"
-    script_template: "AppBundle:ModalScript:page.html.twig"
+    script_service_parameters:
+        template: "AppBundle:Script:template.html.twig"
+        dir:      "%kernel.root_dir%/../web/script"
+        file:     "generated-script.html"
+
+    script_image_service_parameters:
+        temp_dir:  "%kernel.root_dir%/../web/script/temp"
 
 services:
     config_service:
         class: AppBundle\Services\ConfigService
-        arguments: [ "@snc_redis.default", "@image_service" ]
+        arguments: [ "@snc_redis.default", "@script_image_service" ]
 
     config_validator_service:
         class: AppBundle\Services\ConfigValidatorService
-        arguments: [ "@image_service" ]
+        arguments: [ "@script_image_service" ]
 
-    image_service:
-        class: AppBundle\Services\ImageService
+    script_image_service:
+        class: AppBundle\Services\ScriptImageService
+        arguments: [ "%script_image_service_parameters%" ]
 
     script_service:
         class: AppBundle\Services\ScriptService
-        arguments: [ "@config_service", "@templating", "%script_dir%", "%script_template%" ]
+        arguments: [ "%script_service_parameters%", "@config_service", "@templating" ]

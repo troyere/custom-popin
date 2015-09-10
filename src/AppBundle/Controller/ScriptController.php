@@ -16,7 +16,7 @@ class ScriptController extends Controller
     /**
      * Download script file
      *
-     * @Route("/script/show", name="modal_script_show", methods = { "GET" })
+     * @Route("/script/show", name="script_show", methods = { "GET" })
      *
      * @param Request $request
      * @return BinaryFileResponse

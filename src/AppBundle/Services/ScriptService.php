@@ -2,11 +2,18 @@
 
 namespace AppBundle\Services;
 
+use Exception;
+use Symfony\Component\Filesystem\Filesystem;
 use AppBundle\Services\ConfigService;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ScriptService
 {
+
+    /**
+     * @var Filesystem
+     */
+    protected $fileSystem;
 
     /**
      * @var ConfigService
@@ -21,62 +28,57 @@ class ScriptService
     /**
      * @var string
      */
+    protected $template;
+
+    /**
+     * @var string
+     */
     protected $dir;
 
     /**
      * @var string
      */
-    protected $template;
+    protected $file;
 
-    public function __construct(ConfigService $config, EngineInterface $engine, $dir, $template)
+    public function __construct(array $parameters, ConfigService $config, EngineInterface $engine)
     {
-        $this->config   = $config;
-        $this->engine   = $engine;
-        $this->dir      = $dir;
-        $this->template = $template;
+        $this->fileSystem = new Filesystem();
+        $this->config     = $config;
+        $this->engine     = $engine;
+        $this->template   = $parameters['template'];
+        $this->dir        = $parameters['dir'];
+        $this->file       = $parameters['file'];
     }
 
     /**
-     * Return the modal script dir
-     *
-     * @return string
-     */
-    public function getDir()
-    {
-        return $this->dir;
-    }
-
-    /**
-     * Return the modal script path
+     * Return the script path
      *
      * @return string
      */
     public function getPath()
     {
-        return $this->dir.DIRECTORY_SEPARATOR.'generated-page.html';
+        return $this->dir.DIRECTORY_SEPARATOR.$this->file;
     }
 
     /**
-     * Create the modal file
+     * Create the script file
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function createFile()
     {
-        $dir    = $this->getDir();
-        $dest   = $this->getPath();
-        $config = $this->config->get();
-
+        // Script rendering
         $content = $this->engine->render($this->template, array(
-            'config' => $config
+            'config' => $this->config->get()
         ));
 
-        if (!is_dir($dir)) {
-            mkdir($dir);
+        // Script file creation
+        $this->fileSystem->mkdir($this->dir);
+        $path = $this->getPath();
+        if (!file_put_contents($path, $content)) {
+            throw new Exception('Something went wrong in the script creation.');
         }
-        if (!file_put_contents($dest, $content)) {
-            throw new \Exception('Something went wrong in the modal script creation.');
-        }
+        return $path;
     }
 
 }

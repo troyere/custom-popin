@@ -21,7 +21,9 @@
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
         "snc/redis-bundle": "1.1.9",
-        "predis/predis": "~1.0"
+        "predis/predis": "~1.0",
+        "symfony/filesystem": "~2.7.4",
+        "imagine/imagine": "~0.6.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

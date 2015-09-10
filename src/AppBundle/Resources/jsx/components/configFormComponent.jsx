@@ -48,10 +48,11 @@
         },
 
         setMessage: function (type, message) {
-            this.setState({
-                messageType: type,
-                message: message
-            });
+            this.setState({ messageType: type, message: message });
+        },
+
+        clearMessage: function () {
+            this.setState({ messageType: '', message: '' });
         },
 
         handleSave: function (e) {
@@ -63,7 +64,7 @@
                 if (response.errors) {
                     this.setMessage('danger', response.errors);
                 } else {
-                    this.setMessage('success', 'The modal script has been successfully saved.');
+                    this.setMessage('success', 'The script has been successfully saved.');
                     ScriptService.show();
                 }
             }.bind(this));
@@ -76,9 +77,16 @@
         handleChangeImage: function (event) {
             var fileReader = new FileReader();
             var file       = event.target.files[0];
+            var maxSize    = 2000000;
 
             fileReader.onload = function (upload) {
-                this.setState({ formDirty: true, configImage: upload.target.result });
+                if (upload.total > maxSize) {
+                    this.setMessage('danger', 'The image is too large (2mb max).');
+                    this.setState({ formDirty: false });
+                } else {
+                    this.clearMessage();
+                    this.setState({ formDirty: true, configImage: upload.target.result });
+                }
             }.bind(this);
             fileReader.readAsDataURL(file);
         },
@@ -124,7 +132,7 @@
                         if (response.errors) {
                             this.setMessage('danger', response.errors);
                         } else {
-                            this.setMessage('info', 'The modal script has been automatically saved.');
+                            this.setMessage('info', 'The script has been automatically saved.');
                         }
                     }.bind(this));
                 }
