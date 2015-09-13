@@ -1,9 +1,9 @@
 
 parameters:
     script_service_parameters:
-        template: "AppBundle:Script:template.html.twig"
+        template: "AppBundle:Script:template.js.twig"
         dir:      "%kernel.root_dir%/../web/script"
-        file:     "generated-script.html"
+        file:     "generated-script.js"
 
     script_image_service_parameters:
         temp_dir:  "%kernel.root_dir%/../web/script/temp"
@@ -11,7 +11,7 @@ parameters:
 services:
     config_service:
         class: AppBundle\Services\ConfigService
-        arguments: [ "@snc_redis.default", "@script_image_service" ]
+        arguments: [ "@snc_redis.default" ]
 
     config_validator_service:
         class: AppBundle\Services\ConfigValidatorService
@@ -23,4 +23,4 @@ services:
 
     script_service:
         class: AppBundle\Services\ScriptService
-        arguments: [ "%script_service_parameters%", "@config_service", "@templating" ]
+        arguments: [ "%script_service_parameters%", "@templating", "@config_service", "@script_image_service" ]

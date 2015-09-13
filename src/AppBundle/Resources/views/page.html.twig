@@ -1,0 +1,25 @@
+
+{% extends 'AppBundle::root.html.twig' %}
+
+{% block title %}Custom Popin{% endblock %}
+
+{% block stylesheets %}
+    <link href="/build/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/build/css/core.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block root %}
+    <div class="container">
+
+        <h1 class="page-header">Custom Popin <small>Configuration</small></h1>
+
+        {% block body %}{% endblock %}
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/build/js/main.min.js"></script>
+{% endblock %}
+
+

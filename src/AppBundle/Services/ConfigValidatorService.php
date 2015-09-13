@@ -23,12 +23,20 @@ class ConfigValidatorService
      */
     public function validate(array $config)
     {
+        $title     = isset($config['title']) ? $config['title'] : null;
+        $text      = isset($config['text']) ? $config['text'] : null;
         $sizeMode  = isset($config['sizeMode']) ? $config['sizeMode'] : null;
         $width     = isset($config['width']) ? $config['width'] : null;
         $height    = isset($config['height']) ? $config['height'] : null;
         $imagePath = isset($config['imagePath']) ? $config['imagePath'] : null;
 
         $errors = array();
+        if (empty($title)) {
+            $errors[] = 'Title is required.';
+        }
+        if (empty($text)) {
+            $errors[] = 'Text is required.';
+        }
         if ($sizeMode === 'custom' && (empty($width) || empty($height))) {
             $errors[] = 'Width and height are both required if the size mode equals "custom".';
         }

@@ -9,26 +9,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class ScriptController extends Controller
 {
 
     /**
-     * Download script file
+     * Show script file
      *
      * @Route("/script/show", name="script_show", methods = { "GET" })
+     * @Template()
      *
      * @param Request $request
-     * @return BinaryFileResponse
-     * @throws Exception
+     * @return array
      */
     public function showAction(Request $request)
     {
-        $path = $this->get('script_service')->getPath();
-        if (!is_file($path)) {
-            throw new Exception(sprintf('The file "%s" does not exists', $path));
-        }
-        return new BinaryFileResponse($path);
+        return array();
     }
 
 }

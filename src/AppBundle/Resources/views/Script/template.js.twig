@@ -1,0 +1,105 @@
+(function() {
+    'use strict';
+
+    // Config vars
+    var title           = '{{ title }}';
+    var text            = '{{ text }}';
+    var image           = '{{ image | default('') }}';
+    var contentBehavior = '{{ contentBehavior }}';
+    var styleDialog     = '{{ styleDialog | default('') }}';
+    var styleText       = '{{ styleText | default('') }}';
+
+    // Dialog
+    var dialog = document.createElement('dialog');
+    dialog.setAttribute('id', 'dialog');
+    dialog.setAttribute('class', 'dialog');
+    dialog.setAttribute('style',
+        'font-family:"Helvetica Neue",Helvetica,Arial,sans-serif; ' +
+        'font-size:14px; ' +
+        'color:#333; ' +
+        'position:fixed; ' +
+        'padding:0; ' +
+        'background-c olor:#fff; ' +
+        'border:1px solid rgba(0, 0, 0, 0.3); ' +
+        'border-radius:5px; ' +
+        'box-shadow:0 3px 7px rgba(0, 0, 0, 0.3); ' +
+        'z-index:99; ' +
+        styleDialog
+    );
+
+    // Header
+    var dialogHeader = document.createElement('div');
+    dialogHeader.setAttribute('class', 'dialog-header');
+    dialogHeader.setAttribute('style',
+        'font-size:18px; ' +
+        'font-weight:500; ' +
+        'padding:10px; '
+    );
+    dialog.appendChild(dialogHeader);
+
+    // Header text
+    dialogHeader.appendChild(document.createTextNode(title));
+
+    // Body
+    var dialogBody = document.createElement('div');
+    dialogBody.setAttribute('class', 'dialog-body');
+    dialogBody.setAttribute('style',
+        'padding:0 10px 0 10px; '
+    );
+    dialog.appendChild(dialogBody);
+
+    // Body text
+    var dialogTextContainer = document.createElement('div');
+    dialogTextContainer.setAttribute('class', 'dialog-text-container');
+    dialogTextContainer.setAttribute('style', styleText);
+    if (image) {
+        var dialogImage = document.createElement('img');
+        dialogImage.setAttribute('src', image);
+        dialogImage.setAttribute('style',
+            'margin:0 10px 0 0'
+        );
+        dialogTextContainer.appendChild(dialogImage);
+    }
+    dialogTextContainer.appendChild(document.createTextNode(text));
+    dialogBody.appendChild(dialogTextContainer);
+
+    // Footer
+    var dialogFooter = document.createElement('div');
+    dialogFooter.setAttribute('class', 'dialog-footer');
+    dialogFooter.setAttribute('style',
+        'padding:10px; ' +
+        'text-align:right; '
+    );
+    dialog.appendChild(dialogFooter);
+
+    // Footer buttons
+    var dialogButtonExit = document.createElement('button');
+    dialogButtonExit.setAttribute('class', 'dialog-exit');
+    dialogButtonExit.setAttribute('style',
+        'display:inline-block; ' +
+        'padding:6px 12px; ' +
+        'margin:0; ' +
+        'text-align:center; ' +
+        'text-shadow:0 1px 0 #fff; ' +
+        'white-space:nowrap; ' +
+        'vertical-align:middle; ' +
+        'cursor:pointer; ' +
+        'background:transparent linear-gradient(to bottom,#fff 0,#e0e0e0 100%) repeat-x; ' +
+        'border:1px solid #ccc; ' +
+        'border-radius:4px; ' +
+        'color:#333; ' +
+        'box-shadow:inset 0 1px 0 rgba(255,255,255,0.15),0 1px 1px rgba(0,0,0,0.075); '
+    );
+    dialogButtonExit.appendChild(document.createTextNode(
+        'Close'
+    ));
+    dialogButtonExit.onclick = function() {
+        dialog.close();
+    };
+    dialogFooter.appendChild(dialogButtonExit);
+
+    // Add to the body
+    document.querySelector('body').appendChild(dialog);
+    dialog.show();
+
+})();

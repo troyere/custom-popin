@@ -10,16 +10,17 @@
 
         getInitialState: function () {
             return {
-                message: '',
-                messageType: '',
+                message: null,
+                messageType: null,
                 formDirty: false,
                 configTitle: '',
-                configImage: '',
+                configImage: null,
                 configText: '',
                 configSizeMode: 'normal',
-                configWidth: 0,
-                configHeight: 0,
-                configTheme: 'default'
+                configContentBehavior: 'adaptive-height',
+                configWidth: null,
+                configHeight: null,
+                configTheme: 'none'
             };
         },
 
@@ -29,6 +30,7 @@
                 image: this.state.configImage,
                 text: this.state.configText,
                 sizeMode: this.state.configSizeMode,
+                contentBehavior: this.state.configContentBehavior,
                 width: this.state.configWidth,
                 height: this.state.configHeight,
                 theme: this.state.configTheme
@@ -41,6 +43,7 @@
                 configImage: config.image,
                 configText: config.text,
                 configSizeMode: config.sizeMode,
+                configContentBehavior: config.contentBehavior,
                 configWidth: config.width,
                 configHeight: config.height,
                 configTheme: config.theme
@@ -110,6 +113,10 @@
             this.setState({ formDirty: true, configHeight: event.target.value });
         },
 
+        handleChangeContentBehavior: function (event) {
+            this.setState({ formDirty: true, configContentBehavior: event.target.value });
+        },
+
         handleChangeTheme: function (event) {
             this.setState({ formDirty: true, configTheme: event.target.value });
         },
@@ -118,6 +125,7 @@
             // Fill the form
             ConfigService.find().done(function (response) {
                 if (response.config) {
+                    console.log(response.config);
                     this.setConfig(response.config);
                 }
             }.bind(this));
@@ -158,7 +166,7 @@
                         {messageType && message ? <AlertComponent type={messageType} message={message}/> : null}
                     </div>
 
-                    <div className="form-group" id="field-title">
+                    <div className="form-group">
                         <label htmlFor="title" className="control-label col-sm2">
                             Title
                         </label>
@@ -167,7 +175,7 @@
                                onChange={this.handleChangeTitle}/>
                     </div>
 
-                    <div className="form-group" id="field-text">
+                    <div className="form-group">
                         <label htmlFor="text" className="control-label col-sm2">
                             Text
                         </label>
@@ -176,7 +184,7 @@
                                   onChange={this.handleChangeText}/>
                     </div>
 
-                    <div className="form-group" id="field-title-icon">
+                    <div className="form-group">
                         <label htmlFor="title-icon" className="control-label col-sm2">
                             Image
                         </label>
@@ -184,41 +192,45 @@
                                onChange={this.handleChangeImage}/>
                     </div>
 
-                    <div className="form-group" id="field-size-mode">
+                    <div className="form-group">
                         <label className="control-label col-sm2">
                             Size mode
                         </label>
-
                         <div className="form-group">
                             <label className="radio-inline">
                                 <input type="radio" name="sizeMode" value="normal"
                                        checked={this.state.configSizeMode === 'normal'}
-                                       onChange={this.handleChangeSizeMode}/> normal
+                                       onChange={this.handleChangeSizeMode}/>
+                                Normal
                             </label>
                             <label className="radio-inline">
                                 <input type="radio" name="sizeMode" value="small"
                                        checked={this.state.configSizeMode === 'small'}
-                                       onChange={this.handleChangeSizeMode}/> small
+                                       onChange={this.handleChangeSizeMode}/>
+                                Small
                             </label>
                             <label className="radio-inline">
                                 <input type="radio" name="sizeMode" value="large"
                                        checked={this.state.configSizeMode === 'large'}
-                                       onChange={this.handleChangeSizeMode}/> large
+                                       onChange={this.handleChangeSizeMode}/>
+                                Large
                             </label>
                             <label className="radio-inline">
                                 <input type="radio" name="sizeMode" value="full-page"
                                        checked={this.state.configSizeMode === 'full-page'}
-                                       onChange={this.handleChangeSizeMode}/> full-page
+                                       onChange={this.handleChangeSizeMode}/>
+                                Full-page
                             </label>
                             <label className="radio-inline">
                                 <input type="radio" name="sizeMode" value="custom"
                                        checked={this.state.configSizeMode === 'custom'}
-                                       onChange={this.handleChangeSizeMode}/> custom
+                                       onChange={this.handleChangeSizeMode}/>
+                                Custom
                             </label>
                         </div>
                     </div>
 
-                    <div className="form-group" id="field-width" style={styleFieldWidth}>
+                    <div className="form-group" style={styleFieldWidth}>
                         <label htmlFor="width" className="control-label col-sm2">
                             Width
                         </label>
@@ -227,7 +239,7 @@
                                onChange={this.handleChangeWidth}/>
                     </div>
 
-                    <div className="form-group" id="field-height" style={styleFieldHeight}>
+                    <div className="form-group" style={styleFieldHeight}>
                         <label htmlFor="height" className="control-label col-sm2">
                             Height
                         </label>
@@ -236,15 +248,40 @@
                                onChange={this.handleChangeHeight}/>
                     </div>
 
-                    <div className="form-group" id="field-theme">
+                    <div className="form-group">
+                        <label className="control-label col-sm2">
+                            Content behavior
+                        </label>
+                        <div className="form-group">
+                            <label className="radio-inline">
+                                <input type="radio" name="contentBehavior" value="none"
+                                       checked={this.state.configContentBehavior === 'none'}
+                                       onChange={this.handleChangeContentBehavior}/>
+                                None
+                            </label>
+                            <label className="radio-inline">
+                                <input type="radio" name="contentBehavior" value="adaptive-height"
+                                       checked={this.state.configContentBehavior === 'adaptive-height'}
+                                       onChange={this.handleChangeContentBehavior}/>
+                                Adaptive height
+                            </label>
+                            <label className="radio-inline">
+                                <input type="radio" name="contentBehavior" value="vertical-scroll"
+                                       checked={this.state.configContentBehavior === 'vertical-scroll'}
+                                       onChange={this.handleChangeContentBehavior}/>
+                                Vertical Scroll
+                            </label>
+                        </div>
+                    </div>
+
+                    <div className="form-group">
                         <label htmlFor="theme" className="control-label col-sm2">
                             Theme
                         </label>
                         <select name="theme" id="theme" className="form-control"
                                 value={this.state.configTheme}
                                 onChange={this.handleChangeTheme}>
-                            <option value="default">Default</option>
-                            <option value="primary">Primary</option>
+                            <option value="none">None</option>
                             <option value="success">Success</option>
                             <option value="info">Info</option>
                             <option value="warning">Warning</option>
